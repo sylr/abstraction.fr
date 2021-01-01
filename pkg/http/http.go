@@ -42,7 +42,7 @@ func NewHTTPRouter(conf *config.Config) http.Handler {
 	})
 
 	// Templates
-	t := template.New("www.abstraction.fr").Funcs(sprig.FuncMap())
+	t := template.New("abstraction.fr").Funcs(sprig.FuncMap())
 
 	var tpl *template.Template
 	if len(conf.TemplatesDir) > 0 {

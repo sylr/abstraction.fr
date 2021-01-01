@@ -33,7 +33,7 @@ func (mdw *ServerMiddleware) Middleware(next http.Handler) http.Handler {
 		tr := trace.StartRegion(r.Context(), "HeadersServerMiddleware")
 		defer tr.End()
 
-		serverString := fmt.Sprintf("www.abstraction.fr/%s", mdw.Version)
+		serverString := fmt.Sprintf("abstraction.fr/%s", mdw.Version)
 		w.Header().Add("Server", serverString)
 
 		next.ServeHTTP(w, r)

@@ -9,7 +9,7 @@ RUN apt-get update && apt-get dist-upgrade -y && \
     apt-get install -y build-essential libc6-dev libbsd-dev zlib1g-dev libzstd-dev \
     libsasl2-dev liblz4-dev musl-dev libssl-dev
 
-WORKDIR /go/src/github.com/sylr/www.abstraction.fr
+WORKDIR /go/src/abstraction.fr
 
 COPY go*.mod go*.sum ./
 
@@ -23,7 +23,7 @@ FROM --platform=$BUILDPLATFORM go AS builder
 
 ARG TARGETPLATFORM
 
-RUN ["/bin/bash", "-c", "make build GO_BUILD_VERSION_TARGET=dist/$TARGETPLATFORM/www.abstraction.fr GOOS=$(cut -d '/' -f1 <<<\"$TARGETPLATFORM\") GOARCH=$(cut -d '/' -f2 <<<\"$TARGETPLATFORM\")"]
+RUN ["/bin/bash", "-c", "make build GO_BUILD_VERSION_TARGET=dist/$TARGETPLATFORM/abstraction.fr GOOS=$(cut -d '/' -f1 <<<\"$TARGETPLATFORM\") GOARCH=$(cut -d '/' -f2 <<<\"$TARGETPLATFORM\")"]
 
 # ------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ FROM scratch
 
 ARG TARGETPLATFORM
 
-LABEL org.opencontainers.image.source https://github.com/sylr/www.abstraction.fr
+LABEL org.opencontainers.image.source https://github.com/sylr/abstraction.fr
 
 WORKDIR /usr/local/bin
 
@@ -40,4 +40,4 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 COPY --from=builder /etc/services /etc/services
-COPY --from=builder "/go/src/github.com/sylr/www.abstraction.fr/dist/$TARGETPLATFORM/www.abstraction.fr" .
+COPY --from=builder "/go/src/abstraction.fr/dist/$TARGETPLATFORM/abstraction.fr" .
