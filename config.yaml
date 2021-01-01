@@ -1,0 +1,34 @@
+# Internal configurations
+internal:
+  # Subnets trusted for internal, probes and metrics endpoints
+  trusted_subnets:
+  - 10.0.0.0/8
+  - 127.0.0.0/8
+  - 172.16.0.0/12
+  - 192.168.0.0/16
+
+# Uncomment following properties to use templates or static contents from FS
+# instead of the ones embeded in the binary
+#static: ./static
+#templates: ./templates/
+
+# Length of this []bool defines the logger level.
+# []bool{true, true, true} -> -vvv
+verbose:
+- true # Error
+- true # Warn
+- true # Info
+#- true # Debug
+#- true # Trace
+
+# Definitions for vanity go module names
+go-modules:
+- name: abstraction.fr
+  go-import: git https://github.com/sylr/abstraction.fr
+  go-source: https://github.com/sylr/abstraction.fr/ https://github.com/sylr/abstraction.fr/tree/master{/dir} https://github.com/sylr/abstraction.fr/blob/master{/dir}/{file}#L{line}
+- name: abstraction.fr/go-libqd
+  go-import: git https://github.com/sylr/go-libqd
+  go-source: https://github.com/sylr/go-libqd/ https://github.com/sylr/go-libqd/tree/master{/dir} https://github.com/sylr/go-libqd/blob/master{/dir}/{file}#L{line}
+- name: abstraction.fr/go-yaml-crypto
+  go-import: git https://github.com/sylr/go-yaml-crypto
+  go-source: https://github.com/sylr/go-yaml-crypto/ https://github.com/sylr/go-yaml-crypto/tree/master{/dir} https://github.com/sylr/go-yaml-crypto/blob/master{/dir}/{file}#L{line}

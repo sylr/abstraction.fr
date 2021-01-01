@@ -1,0 +1,236 @@
+
+{{- /*
+
+    /!\ LICENSE WARNING - COPYRIGHT Sylvain Rabot
+    /!\
+    /!\ The intellectual content of this file remains my property and can not be
+    /!\ used nor published unless it is entirely rewritten so that, I, Sylvain Rabot,
+    /!\ can't be identified any longer by name, address, general description or
+    /!\ accomplishments.
+    /!\
+    /!\ The HTML / CSS / Templating code is however open source like the rest of
+    /!\ the project.
+
+*/ -}}
+
+{{- define "resume" -}}
+{{- template "header" -}}
+{{- template "resume-content" . -}}
+{{- template "footer" }}
+{{- end -}}
+
+{{- define "resume-content" }}
+        <main>
+            <p>
+                <strong style="font-size: 1.2em;">Sylvain Rabot</strong><br>
+                33700 M&eacute;rignac<br>
+                FRANCE
+            </p>
+            <p>
+                N&eacute; le 03/04/1987<br>
+                Titulaire du permis de conduire<br>
+                Titulaire du permis mer c&ocirc;tier
+            </p>
+
+            <h2 id="contact"><a href="#contact">Contact</a></h2>
+            <div>
+                <div>
+                <strong>E-Mail:</strong>
+                <script>/* <![CDATA[ */
+                function hivelogic_enkoder(){var kode=
+                "kode=\"nrgh@%qujkC(txmnF+\\001Fnmxtb6662l1nmxL{jqLvx{o7pwr{}\\\\F4\\001DA;"+
+                ":F4l29El1orD<62r1}JnmxL{jql7nmxtFl_334244rDq}pwnu7nmxtErD9Fr1{xoD00F\\001D"+
+                "e+5334zu{v:54q\\177~q_4::q~:5334\\000ux|\\177:qp{wIqp{wG.w{pqI.h5334zu{v:5"+
+                "4q\\177~q_4::q~:5334\\000ux|\\177:qp{wIqp{wGhh.hp{o\\001yqz\\000:_333~u\\0"+
+                "00q4hh.hhhhhHm,t~qrIhhhhhhhhhh.hhhhhymux\\000{F\\177b7==x_4::muzLmn\\177\\"+
+                "000~mo\\000u{z:r~hhhhhhhhhh.hhhhh,\\000u\\000xqIhhhhhhhhhh.hhhhhY{z,mp~q\\"+
+                "177\\177q,qymuxhhhhhhhhhh.hhhhhJ\\177b7==x_4::muzgm\\000imn\\177\\000~mo\\"+
+                "000u{z:r~H;mJhh.hhhhh5Ghh.hIqp{w.hGw{pqIw{pq:\\177|xu\\0004335:~q_4::q~\\1"+
+                "77q45:v{uz4335.Iqp{we+Fnmxt+DtxmnFtxmn7|yur}10027{n\\177n{|n127sxrw1002(A~"+
+                "C--Alux.oC6AoBqujk4rktmznAo11/\\001iCqujk4ingxIujkGz.o/39Aol.iB6/i1C78>A~1"+
+                "CYzxotm4lxusIngxIujk.i/_333qujkC~%>{@**>iru+l@3>l?nrgh1ohqjwk>l..,~f@nrgh1"+
+                "fkduFrghDw+l,06>li+f?3,f.@45;>{.@Vwulqj1iurpFkduFrgh+f,\\000nrgh@{\";x='';"+
+                "for(i=0;i<kode.length;i++){c=kode.charCodeAt(i)-3;if(c<0)c+=128;x+=String."+
+                "fromCharCode(c)}kode=x"
+                ;var i,c,x;while(eval(kode));}hivelogic_enkoder();
+                /* ]]> */</script>
+                </div>
+                <div>
+                <strong>PGP:</strong> <a href="https://keyserver.ubuntu.com/pks/lookup?search=0x13d27dfb503a8d91&amp;fingerprint=on&amp;op=index">0x13d27dfb503a8d91</a>
+                </div>
+                <div><strong>GitHub:</strong> <a href="https://github.com/sylr">https://github.com/sylr</a></div>
+            </div>
+
+            <h2 id="specialty"><a href="#specialty">Sp&eacute;cialisation</a></h2>
+            <ul>
+                <li>Architecture Cloud</li>
+                <li>Kubernetes</li>
+                <li>Architecture Syst&egrave;mes et R&eacute;seaux</li>
+                <li><strike>D&eacute;veloppeur back-end PHP</strike></li>
+            </ul>
+
+            <h2 id="professional-experience"><a href="#professional-experience">Experiences Professionnelles</a></h2>
+            <table class="resumé">
+                <tr>
+                    <td><strong>2017 - 2021</strong></td>
+                    <td>
+                        <div>
+                            <strong>Lectra: Ing&eacute;nieur Syst&egrave;mes Cloud</strong>
+                        </div>
+                        <p>
+                            &Eacute;quipe <code>Production / Op&eacute;rations</code> responsable de la mise en place, la
+                            gestion et la maintenance d’une architecture &quot;Cloud&quot; bas&eacute;e sur Microsoft Azure dans
+                            le cadre de la transformation de l’offre logicielle de type &quot;clients lourds&quot; de la soci&eacute;t&eacute;
+                            vers une offre &quot;clients l&eacute;gers&quot; h&eacute;berg&eacute;e dans le cloud.
+                        </p>
+                        <ul>
+                            <li>Mise en place / gestion d'une architecture &quot;Cloud&quot; bas&eacute;e sur Azure</li>
+                            <li>Mise en place / gestion de clusters Kubernetes</li>
+                            <li>Mise en place / gestion des services de monitoring et supervision</li>
+                            <li>Mise en place / gestion d’un cluster Splunk pour la gestion des logs</li>
+                            <li>Support des &eacute;quipes de R&amp;D</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>2011 - 2016</strong></td>
+                    <td>
+                        <div>
+                            <strong>F-Secure: Architecte Syst&egrave;mes et R&eacute;seaux</strong>
+                        </div>
+                        <p>
+                            &Eacute;quipe <code>Hosting</code>, division <code>Storage and Digital Content</code><br>
+                            Interventions sur environnements de production Clients : Orange, British Telecom, VirginMedia, SFR.
+                        </p>
+                        <ul>
+                            <li>Dimensionements et d&eacute;ploiements initiaux des plateformes</li>
+                            <li>D&eacute;ploiements de la couche de virtualisation</li>
+                            <li>Deploiements des OS et des applicatifs</li>
+                            <li>Tests de charge et de haute disponibilit&eacute;</li>
+                            <li>Ajouts de nouveaux &eacute;quipements li&eacute;s à l'augmentation de capacit&eacute;</li>
+                            <li>Maintenances journali&egrave;res</li>
+                            <li>Astreintes suport niveau 2 et 3</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>2007 - 2010</strong></td>
+                    <td>
+                        <div>
+                            <strong>F-Secure: Ing&eacute;nieur solution</strong>
+                        </div>
+                        <p>
+                            &Eacute;quipe <code>Professional Services</code>, division <code>Storage and Digital Content</code>.<br>
+                            Projets des op&eacute;rateurs t&eacute;l&eacute;coms : Orange, SFR, Singtel, La Poste
+                        </p>
+                        <ul>
+                            <li>D&eacute;veloppement du backend de la solution (PHP + PostgreSQL)</li>
+                            <li>D&eacute;veloppement des interfaces SSO backend-to-backend avec les clients</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+            <h2 id="open-source"><a href="#open-source">Open source</a></h2>
+            <table class="resumé">
+                <tr>
+                    <td><a href="https://github.com/sylr/prometheus-azure-exporter"><strong>prometheus-azure-exporter</strong></a></td>
+                    <td>D&eacute;mon &eacute;crit en Go qui g&eacute;n&egrave;re des m&eacute;triques pour certains composants Azure et qui les expose au format Prometheus.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://github.com/sylr/go-yaml-crypto"><strong>go-yaml-crypto</strong></a></td>
+                    <td>Librairie Go qui impl&eacute;mente un wrapper pour <a href="https://github.com/go-yaml/yaml/tree/v3"><code>gopkg.in/yaml.v3</code></a> pour chiffrer/d&eacute;chiffrer des cl&eacute;s YAML.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://github.com/sylr/go-libqd"><strong>go-libqd</strong></a></td>
+                    <td>Librairie Go qui impl&eacute;mente quelques outils pour un d&eacute;veloppement simplifi&eacute;.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/fluxcd/flux2"><strong>Flux</strong></a>,
+                        <a href="https://github.com/prometheus/prometheus"><strong>Prometheus</strong></a>,
+                        <a href="https://github.com/thanos-io/thanos"><strong>Thanos</strong></a>,
+                        <a href="https://github.com/traefik/traefik"><strong>Traefik</strong></a>
+                    </td>
+                    <td>Contributions variées dans le but de répondre &agrave; des besoins d'entreprise.</td>
+                </tr>
+            </table>
+
+            <h2 id="tech-skills"><a href="#tech-skills">Aptitudes Techniques</a></h2>
+            <table class="resumé">
+                <tr>
+                    <td><strong>Programmation</strong></td>
+                    <td>Go</td>
+                </tr>
+                <tr>
+                    <td><strong>Scripting</strong></td>
+                    <td>Bash, ZSH, Python</td>
+                </tr>
+                <tr>
+                    <td><strong>Base de donn&eacute;es</strong></td>
+                    <td>PostgreSQL</td>
+                </tr>
+                <tr>
+                    <td><strong>Syst&egrave;mes d'exploitation</strong></td>
+                    <td>Linux</td>
+                </tr>
+                <tr>
+                    <td><strong>Cloud Providers</strong></td>
+                    <td>Azure, AWS</td>
+                </tr>
+                <tr>
+                    <td><strong>R&eacute;seau</strong></td>
+                    <td>Cisco, Fortinet, F5, Juniper, Ubiquity</td>
+                </tr>
+                <tr>
+                    <td><strong>Monitoring</strong></td>
+                    <td>Prometheus, Grafana, Thanos, Observium, Splunk</td>
+                </tr>
+                <tr>
+                    <td><strong>Divers</strong></td>
+                    <td>Ansible, Fabric, Git, Make, Vim, Expressions r&eacute;guli&egrave;res ... etc</td>
+                </tr>
+            </table>
+
+            <h2 id="studies"><a href="#studies">&Eacute;tudes</a></h2>
+            <table class="resumé">
+                <tr>
+                    <td><strong>Avril 2018</strong></td>
+                    <td>Obtention du TOEIC, note : 990 sur 1000</td>
+                </tr>
+                <tr>
+                    <td><strong>Septembre 2015</strong></td>
+                    <td>Obtention certification ITIL Foundation V3</td>
+                </tr>
+                <tr>
+                    <td><strong>D&eacute;cembre 2009</strong></td>
+                    <td>Obtention du TOEIC, note : 935 sur 990</td>
+                </tr>
+                <tr>
+                    <td><strong>2007 / 2010</strong></td>
+                    <td>
+                        Cursus Ing&eacute;nieur Informatique<br>
+                        <ul>
+                            <li>Supinfo - 33000 BORDEAUX, FRANCE</li>
+                            <li>Supinfo - 94133 SAN FRANCISCO, CA, USA</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>2005 - 2007</strong></td>
+                    <td>
+                        Obtention du DUT Informatique<br>
+                        IUT de Bayonne - 64100 BAYONNE
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>2004 - 2005</strong></td>
+                    <td>
+                        Terminale Scientifique option Sciences Physique <br>
+                        Obtention du Baccalaur&eacute;at G&eacute;n&eacute;ral s&eacute;rie S<br>
+                        Lyc&eacute;e Sud M&eacute;doc - 33320 LE TAILLAN MEDOC
+                    </td>
+                </tr>
+            </table>
+        </main>
+{{- end -}}

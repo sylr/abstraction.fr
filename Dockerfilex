@@ -1,0 +1,43 @@
+# vim: set ft=dockerfile:
+
+ARG GO_VERSION=1.16beta1
+
+# Base image
+FROM --platform=$BUILDPLATFORM golang:$GO_VERSION AS go
+
+RUN apt-get update && apt-get dist-upgrade -y && \
+    apt-get install -y build-essential libc6-dev libbsd-dev zlib1g-dev libzstd-dev \
+    libsasl2-dev liblz4-dev musl-dev libssl-dev
+
+WORKDIR /go/src/github.com/sylr/www.abstraction.fr
+
+COPY go*.mod go*.sum ./
+
+RUN go mod download
+
+COPY . .
+
+# ------------------------------------------------------------------------------
+
+FROM --platform=$BUILDPLATFORM go AS builder
+
+ARG TARGETPLATFORM
+
+RUN ["/bin/bash", "-c", "make build GO_BUILD_VERSION_TARGET=dist/$TARGETPLATFORM/www.abstraction.fr GOOS=$(cut -d '/' -f1 <<<\"$TARGETPLATFORM\") GOARCH=$(cut -d '/' -f2 <<<\"$TARGETPLATFORM\")"]
+
+# ------------------------------------------------------------------------------
+
+FROM scratch
+
+ARG TARGETPLATFORM
+
+LABEL org.opencontainers.image.source https://github.com/sylr/www.abstraction.fr
+
+WORKDIR /usr/local/bin
+
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
+COPY --from=builder /etc/services /etc/services
+COPY --from=builder "/go/src/github.com/sylr/www.abstraction.fr/dist/$TARGETPLATFORM/www.abstraction.fr" .
