@@ -1,0 +1,17 @@
+{{- define "go-get" }}
+{{- template "header" . }}
+        <main>
+            <h2>{{ .GoModule.Name }}</h2>
+            <table class="resumé">
+                <tr>
+                    <td><strong>Import</strong></td>
+                    <td>{{ .GoModule.Import | html }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Source</strong></td>
+                    <td>{{ .GoModule.Source | html }}</td>
+                </tr>
+            </table>
+        </main>
+{{- template "footer" }}
+{{- end -}}

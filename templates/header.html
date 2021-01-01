@@ -1,0 +1,19 @@
+{{- define "header" -}}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sylvain Rabot :: Curriculum Vitae :: Architecte Syst&egrave;mes et R&eacute;seaux</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/light.css" media="screen">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        {{- if .GoModule }}
+        <meta name="go-import" content="{{ .GoModule.Name }} {{ .GoModule.Import }}">
+        <meta name="go-source" content="{{ .GoModule.Name }} {{ .GoModule.Source }}">
+        {{- end }}
+    </head>
+    <body>
+        <!-- NAV BAR -->
+        <header>
+            <a href="/"><img src="/static/images/abstraction-fr-transparent.png" alt=""></a>
+        </header>
+{{ end -}}
