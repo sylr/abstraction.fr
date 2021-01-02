@@ -21,7 +21,7 @@ import (
 	tstatic "abstraction.fr/static"
 	"abstraction.fr/templates"
 
-	"github.com/Masterminds/sprig"
+	"github.com/Masterminds/sprig/v3"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"

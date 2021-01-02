@@ -3,24 +3,24 @@ module abstraction.fr
 go 1.16
 
 require (
-	github.com/Masterminds/goutils v1.1.0 // indirect
-	github.com/Masterminds/semver v1.5.0 // indirect
-	github.com/Masterminds/sprig v2.22.0+incompatible
-	github.com/golang/protobuf v1.3.5 // indirect
-	github.com/google/uuid v1.1.2 // indirect
-	github.com/gorilla/mux v1.7.4
+	github.com/Masterminds/sprig/v3 v3.2.0
+	github.com/google/uuid v1.1.3 // indirect
+	github.com/gorilla/mux v1.8.0
 	github.com/huandu/xstrings v1.3.2 // indirect
-	github.com/imdario/mergo v0.3.11 // indirect
-	github.com/konsorten/go-windows-terminal-sequences v1.0.3 // indirect
-	github.com/kr/pretty v0.1.0 // indirect
-	github.com/mileusna/useragent v0.0.0-20190129205925-3e331f0949a5
-	github.com/mitchellh/copystructure v1.0.0 // indirect
+	github.com/mattn/go-runewidth v0.0.9 // indirect
+	github.com/mileusna/useragent v1.0.2
+	github.com/mitchellh/reflectwalk v1.0.1 // indirect
 	github.com/olekukonko/tablewriter v0.0.4
-	github.com/prometheus/client_golang v1.3.0
-	github.com/prometheus/procfs v0.0.11 // indirect
-	github.com/sirupsen/logrus v1.4.2
+	github.com/prometheus/client_golang v1.9.0
+	github.com/sirupsen/logrus v1.7.0
 	github.com/sylr/go-libqd/config v0.4.1
-	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
+	golang.org/x/sys v0.0.0-20201231184435-2d18734c6014 // indirect
+	google.golang.org/protobuf v1.25.0 // indirect
 )
 
-replace github.com/gorilla/handlers => github.com/sylr/gorilla-handlers v1.4.3-0.20200522195821-d4f92d62f121
+replace (
+	github.com/go-kit/kit/log => github.com/sylr/go-kit/log v0.0.0-20210102181225-11d0b12e814f
+	github.com/gorilla/handlers => github.com/sylr/gorilla-handlers v1.4.3-0.20200522195821-d4f92d62f121
+	github.com/prometheus/common => github.com/sylr/prometheus-common v0.2.1-0.20210102181937-d132ea8268d2
+)
