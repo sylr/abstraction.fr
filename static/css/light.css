@@ -136,6 +136,15 @@ body>footer {
     text-align: left;
 }
 
+body>footer a, body>footer a:visited {
+    color: #FFF;
+    text-decoration: none;
+}
+
+body>footer a:hover {
+    text-decoration: underline;
+}
+
 /* Browse */
 
 main {
