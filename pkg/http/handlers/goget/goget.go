@@ -53,11 +53,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		var suffix string
-		if cn != mod.Name {
-			suffix = cn[len(mod.Name):]
-			mod.Name = mod.Name + suffix
-		}
+		// var suffix string
+		// if cn != mod.Name {
+		// 	suffix = cn[len(mod.Name):]
+		// 	mod.Name = mod.Name + suffix
+		// }
 
 		buf := bytes.NewBuffer(nil)
 		wr := bufio.NewWriter(buf)
