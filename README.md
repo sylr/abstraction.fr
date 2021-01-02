@@ -1,4 +1,4 @@
-# <img src="https://abstraction.fr/favicon.ico" width="16" height="16"> abstraction.fr
+# <img src="https://abstraction.fr/favicon.ico" width="20" height="20"> abstraction.fr
 
 My personal website written in Go.
 
