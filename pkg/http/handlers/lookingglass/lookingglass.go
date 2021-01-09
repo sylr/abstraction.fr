@@ -11,19 +11,19 @@ import (
 
 	ua "github.com/mileusna/useragent"
 	"github.com/olekukonko/tablewriter"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // Handler ...
 type Handler struct {
 	config *config.Config
-	logger *log.Logger
+	logger *zap.Logger
 
 	tpl *template.Template
 }
 
 // NewHandler ...
-func NewHandler(conf *config.Config, logger *log.Logger, tpl *template.Template) *Handler {
+func NewHandler(conf *config.Config, logger *zap.Logger, tpl *template.Template) *Handler {
 	h := Handler{
 		config: conf,
 		logger: logger,

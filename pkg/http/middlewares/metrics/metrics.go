@@ -5,8 +5,9 @@ import (
 	"runtime/trace"
 
 	"abstraction.fr/config"
+
 	"github.com/prometheus/client_golang/prometheus"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 var (
@@ -28,18 +29,15 @@ func init() {
 // Middleware ...
 type Middleware struct {
 	Config *config.Config
-	Logger *log.Entry
+	Logger *zap.Logger
 }
 
 // NewMiddleware ...
-func NewMiddleware(conf *config.Config, logger *log.Entry) *Middleware {
+func NewMiddleware(conf *config.Config, logger *zap.Logger) *Middleware {
 	mdw := Middleware{
 		Config: conf,
+		Logger: logger,
 	}
-
-	mdw.Logger = logger.WithFields(log.Fields{
-		"_package": "middlewares.metrics",
-	})
 
 	return &mdw
 }

@@ -1,25 +1,27 @@
 package accesscontrol
 
 import (
+	"fmt"
 	"net"
 	"net/http"
 	"runtime/trace"
 
 	"abstraction.fr/config"
-	log "github.com/sirupsen/logrus"
+
+	"go.uber.org/zap"
 )
 
 // IPWhitelistMiddleware ...
 type IPWhitelistMiddleware struct {
 	Config *config.Config
-	Logger *log.Entry
+	Logger *zap.Logger
 	next   http.Handler
 }
 
 // NewIPWhitelistMiddleware returns a *WhitelistMiddleware. next is an http.Handler
 // which will be used if the request IP is not whitelisted. If next is nil then
 // the middleware will return http.StatusUnauthorized (401)
-func NewIPWhitelistMiddleware(conf *config.Config, logger *log.Entry, next http.Handler) *IPWhitelistMiddleware {
+func NewIPWhitelistMiddleware(conf *config.Config, logger *zap.Logger, next http.Handler) *IPWhitelistMiddleware {
 	mdw := IPWhitelistMiddleware{
 		Config: conf,
 		Logger: logger,
@@ -41,11 +43,11 @@ func (mdw *IPWhitelistMiddleware) Middleware(next http.Handler) http.Handler {
 			return
 		}
 
-		// local logger
-		llogger := mdw.Logger.WithFields(log.Fields{
-			"_func": "WhitelistMiddleware.Middleware",
-			"_path": r.URL.Path,
-		})
+		// Logger fields
+		zfields := zap.Fields(
+			zap.String("_func", "WhitelistMiddleware.Middleware"),
+			zap.String("_path", "r.URL.Path"),
+		)
 
 		// Get client IP from HTTP headers set by the reverse proxy
 		ip := r.Header.Get("X-Real-Ip")
@@ -60,21 +62,21 @@ func (mdw *IPWhitelistMiddleware) Middleware(next http.Handler) http.Handler {
 			_, cidr, err := net.ParseCIDR(sub)
 
 			if err != nil {
-				llogger.Errorf("%s is not a valid CIDR", sub)
+				mdw.Logger.WithOptions(zfields).Error(fmt.Sprintf("%s is not a valid CIDR", sub), zap.Error(err))
 				continue
 			}
 
 			if cidr.Contains(netIP) {
-				llogger.Tracef("%v is whitelisted by %v", netIP, cidr)
+				mdw.Logger.WithOptions(zfields).Debug(fmt.Sprintf("%v is whitelisted by %v", netIP, cidr))
 				next.ServeHTTP(w, r)
 				return
 			}
 		}
 
-		llogger.Debugf("%v is not whitelisted", netIP)
+		mdw.Logger.Debug(fmt.Sprintf("%v is not whitelisted", netIP))
 
 		if mdw.next != nil {
-			llogger.Debugf("next handler is not nil, using it")
+			mdw.Logger.Debug(fmt.Sprintf("next handler is not nil, using it"))
 			mdw.next.ServeHTTP(w, r)
 		} else {
 			w.WriteHeader(http.StatusUnauthorized)

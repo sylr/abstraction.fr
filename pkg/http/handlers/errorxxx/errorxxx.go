@@ -9,13 +9,13 @@ import (
 	"abstraction.fr/config"
 
 	ua "github.com/mileusna/useragent"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // Handler ...
 type Handler struct {
 	config *config.Config
-	logger *log.Logger
+	logger *zap.Logger
 	tpl    *template.Template
 	data   *Data
 }
@@ -27,7 +27,7 @@ type Data struct {
 }
 
 // NewHandler ...
-func NewHandler(conf *config.Config, logger *log.Logger, tpl *template.Template, data *Data) *Handler {
+func NewHandler(conf *config.Config, logger *zap.Logger, tpl *template.Template, data *Data) *Handler {
 	if data == nil {
 		panic("data should not be nil")
 	}

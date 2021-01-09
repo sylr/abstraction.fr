@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"net/http"
 	_ "net/http/pprof" // Registering pprof
@@ -24,7 +25,7 @@ import (
 	"github.com/Masterminds/sprig/v3"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 const (
@@ -33,13 +34,8 @@ const (
 
 // NewHTTPRouter returns an http.Handler based on given configuration.
 // The given router should replace the one which had the previous configuration.
-func NewHTTPRouter(conf *config.Config) http.Handler {
+func NewHTTPRouter(conf *config.Config, logger *zap.Logger) http.Handler {
 	router := mux.NewRouter()
-
-	// Logger
-	logger := log.StandardLogger().WithFields(log.Fields{
-		"_id": "000000",
-	})
 
 	// Templates
 	t := template.New("abstraction.fr").Funcs(sprig.FuncMap())
@@ -50,7 +46,7 @@ func NewHTTPRouter(conf *config.Config) http.Handler {
 			if strings.Contains(path, ".html") {
 				_, err = t.ParseFiles(path)
 				if err != nil {
-					log.Println(err)
+					logger.Error(fmt.Sprintf("walking %s failed", path), zap.Error(err))
 				}
 			}
 
@@ -71,17 +67,16 @@ func NewHTTPRouter(conf *config.Config) http.Handler {
 	}
 
 	// Handlers
-	sublogger := log.StandardLogger()
 	fsHandler := http.FileServer(httpFS)
 	staticfsHandler := http.StripPrefix(staticPrefix, fsHandler)
-	staticHandler := static.NewHandler(conf, sublogger, staticfsHandler, *config.Version)
-	faviconHandler := static.NewHandler(conf, sublogger, fsHandler, *config.Version)
-	resumeHandler := resume.NewHandler(conf, sublogger, tpl)
-	// unavailableHandler := unavailable.NewHandler(conf, sublogger, staticHandler)
-	forbiddenHandler := errorxxx.NewHandler(conf, sublogger, tpl, &errorxxx.Data{StatusCode: 403, Message: "/!\\ Forbidden"})
-	notfoundHandler := errorxxx.NewHandler(conf, sublogger, tpl, &errorxxx.Data{StatusCode: 404, Message: "/!\\ Not Found"})
-	lookingglassHandler := lookingglass.NewHandler(conf, sublogger, tpl)
-	gogetHandler := goget.NewHandler(conf, sublogger, tpl)
+	staticHandler := static.NewHandler(conf, logger, staticfsHandler, *config.Version)
+	faviconHandler := static.NewHandler(conf, logger, fsHandler, *config.Version)
+	resumeHandler := resume.NewHandler(conf, logger, tpl)
+	// unavailableHandler := unavailable.NewHandler(conf, logger, staticHandler)
+	forbiddenHandler := errorxxx.NewHandler(conf, logger, tpl, &errorxxx.Data{StatusCode: 403, Message: "/!\\ Forbidden"})
+	notfoundHandler := errorxxx.NewHandler(conf, logger, tpl, &errorxxx.Data{StatusCode: 404, Message: "/!\\ Not Found"})
+	lookingglassHandler := lookingglass.NewHandler(conf, logger, tpl)
+	gogetHandler := goget.NewHandler(conf, logger, tpl)
 
 	// Middlewares
 	serverHeaderMiddleware := headers.NewServerMiddleware(conf, logger, *config.Version)
