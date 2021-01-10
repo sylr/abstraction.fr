@@ -215,7 +215,7 @@ table.resumé>tbody>tr>td>ul:not(:first-of-type) {
 table.looking-glass {
     border-collapse: collapse;
     border: 0;
-    box-shadow: 1px 2px 3px #ccc;
+    box-shadow: 3px 4px 5px #ccc;
     width: 100%;
 }
 
