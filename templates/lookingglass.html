@@ -8,18 +8,13 @@
         <main>
             <h2>Headers</h2>
             <table class="looking-glass">
-                <!--
                 <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Values</th>
-                    </tr>
-                </thead>
-                -->
-                <tbody>
                     <tr class="h">
                         <th colspan="2">{{ .Method | html }} {{ .RequestURI | html }} {{ .Proto | html }}</th>
                     </tr>
+                </thead>
+
+                <tbody>
                     <tr>
                         <td class="e">Host</td>
                         <td class="v">{{ .URL.Host | html }}</td>
