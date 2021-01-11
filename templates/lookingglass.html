@@ -23,28 +23,28 @@
                         <td class="e">Remote Addr</td>
                         <td class="v">{{ .RemoteAddr | html }}</td>
                     </tr>
-            {{- if .TransferEncoding }}
-            {{- $len := .TransferEncoding | len }}
-            {{- range $i, $value := .TransferEncoding }}
+                {{- if .TransferEncoding }}
+                {{- $len := .TransferEncoding | len }}
+                {{- range $i, $value := .TransferEncoding }}
                     <tr>
                         {{- if eq $i 0 }}
                         <td class="e" rowspan="{{ $len }}">Transfert Encoding</td>
                         {{- end }}
                         <td class="v">{{ $value | html }}</td>
                     </tr>
-            {{- end }}
-            {{- end }}
-            {{- range $header, $values := .Header }}
-            {{- $len := $values | len }}
-            {{- range $i, $value := $values }}
+                {{- end }}
+                {{- end }}
+                {{- range $header, $values := .Header }}
+                {{- $len := $values | len }}
+                {{- range $i, $value := $values }}
                     <tr>
                         {{- if eq $i 0 }}
                         <td class="e"{{ if gt $len 1 }} rowspan="{{ $len }}"{{ end }}>{{ $header | html }}</td>
                         {{- end }}
                         <td class="v">{{ $value | html }}</td>
                     </tr>
-            {{- end }}
-            {{- end }}
+                {{- end }}
+                {{- end }}
                 </tbody>
             </table>
         </main>
