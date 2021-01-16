@@ -5,7 +5,7 @@ import (
 	"sync"
 
 	log "github.com/sirupsen/logrus"
-	qdconfig "github.com/sylr/go-libqd/config"
+	qdconfig "sylr.dev/libqd/config"
 )
 
 // NewMutex ...

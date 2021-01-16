@@ -17,7 +17,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
-	qdconfig "github.com/sylr/go-libqd/config"
+	qdconfig "sylr.dev/libqd/config"
 )
 
 var (
