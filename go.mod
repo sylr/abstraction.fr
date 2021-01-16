@@ -16,7 +16,7 @@ require (
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
 	golang.org/x/sys v0.0.0-20201231184435-2d18734c6014 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
-	sylr.dev/libqd/config v0.0.0-20210116114649-aacc5175aef8
+	sylr.dev/libqd/config v0.0.0-20210116225432-33b27958b842
 )
 
 replace (
