@@ -28,7 +28,7 @@ func init() {
 }
 
 // Config ...
-// +k8s:deepcopy-gen:interfaces=github.com/sylr/go-libqd/config.Config
+// +k8s:deepcopy-gen:interfaces=sylr.dev/libqd/config.Config
 // +k8s:deepcopy-gen=true
 type Config struct {
 	File             string          `                         short:"f" long:"config"  description:"Yaml config"`

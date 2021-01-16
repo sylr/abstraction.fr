@@ -15,9 +15,9 @@ import (
 	"abstraction.fr/pkg/http/handlers/safewrapper"
 
 	"github.com/prometheus/client_golang/prometheus"
-	qdconfig "github.com/sylr/go-libqd/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	qdconfig "sylr.dev/libqd/config"
 )
 
 var (

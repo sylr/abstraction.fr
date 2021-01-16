@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	qdconfig "github.com/sylr/go-libqd/config"
 	"go.uber.org/zap"
+	qdconfig "sylr.dev/libqd/config"
 )
 
 // NewMutex ...

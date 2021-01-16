@@ -12,11 +12,11 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.1 // indirect
 	github.com/olekukonko/tablewriter v0.0.4
 	github.com/prometheus/client_golang v1.9.0
-	github.com/sylr/go-libqd/config v0.4.1
 	go.uber.org/zap v1.16.0
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
 	golang.org/x/sys v0.0.0-20201231184435-2d18734c6014 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
+	sylr.dev/libqd/config v0.0.0-20210116114649-aacc5175aef8
 )
 
 replace (
