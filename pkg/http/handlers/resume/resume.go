@@ -55,7 +55,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ua := ua.Parse(r.UserAgent())
 
 	switch {
-	case ua.Desktop, ua.Tablet, ua.Mobile:
+	case ua.Desktop, ua.Tablet, ua.Mobile, ua.Bot:
 		fallthrough
 	case strings.Contains(r.UserAgent(), "W3C"), strings.Contains(r.UserAgent(), "Validator.nu/LV"):
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
