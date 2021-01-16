@@ -4,24 +4,26 @@ import (
 	"fmt"
 	"sync"
 
-	log "github.com/sirupsen/logrus"
 	qdconfig "github.com/sylr/go-libqd/config"
+	"go.uber.org/zap"
 )
 
 // NewMutex ...
-func NewMutex(manager *qdconfig.Manager, l *log.Logger) Mutex {
+func NewMutex(manager *qdconfig.Manager, logger *zap.Logger, loggerLevel *zap.AtomicLevel) Mutex {
 	return Mutex{
 		&sync.RWMutex{},
 		manager,
-		l,
+		logger,
+		loggerLevel,
 	}
 }
 
 // Mutex ...
 type Mutex struct {
 	*sync.RWMutex
-	manager *qdconfig.Manager
-	l       *log.Logger
+	manager     *qdconfig.Manager
+	logger      *zap.Logger
+	loggerLevel *zap.AtomicLevel
 }
 
 // ConfigValidator ...
@@ -93,17 +95,17 @@ func (cm *Mutex) ConfigApplier(currentConfig qdconfig.Config, newConfig qdconfig
 
 	switch len(newConf.Verbose) {
 	case 1:
-		log.SetLevel(log.ErrorLevel)
+		cm.loggerLevel.SetLevel(zap.ErrorLevel)
 	case 2:
-		log.SetLevel(log.WarnLevel)
+		cm.loggerLevel.SetLevel(zap.WarnLevel)
 	case 3:
-		log.SetLevel(log.InfoLevel)
+		cm.loggerLevel.SetLevel(zap.InfoLevel)
 	case 4:
-		log.SetLevel(log.DebugLevel)
+		cm.loggerLevel.SetLevel(zap.DebugLevel)
 	case 5:
-		log.SetLevel(log.TraceLevel)
+		cm.loggerLevel.SetLevel(zap.DebugLevel)
 	default:
-		log.SetLevel(log.InfoLevel)
+		cm.loggerLevel.SetLevel(zap.InfoLevel)
 	}
 
 	if currentConf != nil {

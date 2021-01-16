@@ -7,19 +7,19 @@ import (
 
 	"abstraction.fr/config"
 
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // Handler ...
 type Handler struct {
 	Config    *config.Config
-	Logger    *log.Logger
+	Logger    *zap.Logger
 	Version   string
 	FSHandler http.Handler
 }
 
 // NewHandler ...
-func NewHandler(conf *config.Config, logger *log.Logger, handler http.Handler, version string) *Handler {
+func NewHandler(conf *config.Config, logger *zap.Logger, handler http.Handler, version string) *Handler {
 	h := Handler{
 		Config:    conf,
 		Logger:    logger,

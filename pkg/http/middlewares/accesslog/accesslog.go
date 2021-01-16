@@ -1,31 +1,26 @@
 package accesslog
 
 import (
-	"fmt"
 	"net/http"
 	"runtime/trace"
 
 	"abstraction.fr/config"
 
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // Middleware ...
 type Middleware struct {
 	Config *config.Config
-	Logger *log.Entry
+	Logger *zap.Logger
 }
 
 // NewMiddleware ...
-func NewMiddleware(conf *config.Config, logger *log.Entry) *Middleware {
+func NewMiddleware(conf *config.Config, logger *zap.Logger) *Middleware {
 	mdw := Middleware{
 		Config: conf,
+		Logger: logger,
 	}
-
-	mdw.Logger = logger.WithFields(log.Fields{
-		"_package": "middlewares.accesslog",
-		"_self":    fmt.Sprintf("%p", &mdw),
-	})
 
 	return &mdw
 }
@@ -39,11 +34,13 @@ func (mdw *Middleware) Middleware(next http.Handler) http.Handler {
 		func() {
 			defer recover()
 
-			mdw.Logger.WithFields(log.Fields{
-				"_func": "Middleware",
-				"host":  r.Host,
-				"path":  r.URL.Path,
-			}).Info()
+			mdw.Logger.Info(
+				"",
+				zap.String("_package", "middlewares.accesslog"),
+				zap.String("_func", "Middleware"),
+				zap.String("host", r.Host),
+				zap.String("path", r.URL.Path),
+			)
 		}()
 
 		next.ServeHTTP(w, r)

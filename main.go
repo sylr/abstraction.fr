@@ -13,11 +13,11 @@ import (
 	"abstraction.fr/config"
 	www "abstraction.fr/pkg/http"
 	"abstraction.fr/pkg/http/handlers/safewrapper"
-	tlog "abstraction.fr/pkg/tools/log"
 
 	"github.com/prometheus/client_golang/prometheus"
-	log "github.com/sirupsen/logrus"
 	qdconfig "github.com/sylr/go-libqd/config"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var (
@@ -38,17 +38,6 @@ var (
 )
 
 func init() {
-	// Log as JSON instead of the default ASCII formatter.
-	log.SetFormatter(&log.TextFormatter{
-		DisableColors:  true,
-		DisableSorting: false,
-		SortingFunc:    tlog.SortLogKeys,
-	})
-
-	// Output to stdout instead of the default stderr
-	// Can be any io.Writer, see below for File example
-	log.SetOutput(os.Stdout)
-
 	// Set & Register build info metric
 	wwwBuildInfo.WithLabelValues(version).Set(1)
 	prometheus.MustRegister(wwwBuildInfo)
@@ -66,9 +55,14 @@ func main() {
 	}
 
 	// Logger
-	log.SetLevel(log.TraceLevel)
-	logger := log.StandardLogger()
-	qdlogger := Logger{logger}
+	atomlevel := zap.NewAtomicLevel()
+	atomlevel.SetLevel(zap.DebugLevel)
+	zapConfig := zap.NewDevelopmentConfig()
+	zapConfig.EncoderConfig.ConsoleSeparator = " "
+	zapConfig.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	logger, _ := zapConfig.Build()
+	logger.Info(fmt.Sprintf("abstraction.fr version %s", version))
+	qdlogger := Logger{logger.WithOptions(zap.AddCallerSkip(1))}
 
 	// Version
 	config.Version = &version
@@ -82,7 +76,7 @@ func main() {
 	configManager := qdconfig.GetManager(&qdlogger)
 
 	// mutex to prevent data races around conf
-	mu := config.NewMutex(configManager, logger)
+	mu := config.NewMutex(configManager, logger, &atomlevel)
 
 	// Add a validator/applier functions
 	configManager.AddValidators(nil, mu.ConfigValidator)
@@ -92,7 +86,7 @@ func main() {
 	err := configManager.MakeConfig(ctx, nil, conf)
 
 	if err != nil {
-		logger.Fatal(err)
+		logger.Fatal("", zap.Error(err))
 	}
 
 	// Add templates and static dirs to config watcher
@@ -106,7 +100,7 @@ func main() {
 			if info.IsDir() {
 				err = configManager.GetWatcher(nil).Add(path)
 				if err != nil {
-					logger.Fatal(err)
+					logger.Fatal("", zap.Error(err))
 				}
 			}
 
@@ -117,7 +111,7 @@ func main() {
 	confChan := configManager.NewConfigChan(nil)
 
 	// HTTP router
-	router := www.NewHTTPRouter(conf)
+	router := www.NewHTTPRouter(conf, logger)
 	safehandler := safewrapper.New(router)
 
 	// HTTP Server
@@ -146,7 +140,7 @@ func main() {
 	for {
 		select {
 		case newConf := <-confChan:
-			newRouter := www.NewHTTPRouter(newConf.(*config.Config))
+			newRouter := www.NewHTTPRouter(newConf.(*config.Config), logger)
 			safehandler.SwapHandler(newRouter)
 		}
 	}

@@ -3,6 +3,7 @@ package resume
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"html/template"
 	"net/http"
 	"strings"
@@ -10,20 +11,20 @@ import (
 	"abstraction.fr/config"
 
 	ua "github.com/mileusna/useragent"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // Handler ...
 type Handler struct {
 	config *config.Config
-	logger *log.Logger
+	logger *zap.Logger
 
 	tpl  *template.Template
 	html []byte
 }
 
 // NewHandler ...
-func NewHandler(conf *config.Config, logger *log.Logger, tpl *template.Template) *Handler {
+func NewHandler(conf *config.Config, logger *zap.Logger, tpl *template.Template) *Handler {
 	h := Handler{
 		config: conf,
 		logger: logger,
@@ -35,13 +36,13 @@ func NewHandler(conf *config.Config, logger *log.Logger, tpl *template.Template)
 	err := h.tpl.ExecuteTemplate(wr, "resume", nil)
 
 	if err != nil {
-		logger.Errorf("handler/resume: %s", err)
+		logger.Error("", zap.Error(err))
 	}
 
 	err = wr.Flush()
 
 	if err != nil {
-		logger.Errorf("handler/resume: %s", err)
+		logger.Error("", zap.Error(err))
 	}
 
 	h.html = buf.Bytes()
@@ -63,6 +64,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotImplemented)
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Write([]byte("Not Implemented: user-agent not recognized.\n"))
-		log.Debugf("handler/cv: \"%s\" not recognized", r.UserAgent())
+		h.logger.Debug(fmt.Sprintf("handler/cv: \"%s\" not recognized", r.UserAgent()))
 	}
 }

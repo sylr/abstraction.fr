@@ -10,13 +10,13 @@ import (
 	"abstraction.fr/pkg/http/handlers/static"
 
 	ua "github.com/mileusna/useragent"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // Handler ...
 type Handler struct {
 	Config *config.Config
-	Logger *log.Logger
+	Logger *zap.Logger
 	Static *static.Handler
 
 	template *template.Template
@@ -24,12 +24,11 @@ type Handler struct {
 }
 
 // NewHandler ...
-func NewHandler(conf *config.Config, logger *log.Logger, static *static.Handler) *Handler {
-
+func NewHandler(conf *config.Config, logger *zap.Logger, static *static.Handler) *Handler {
 	template, err := template.New("unavailable").Parse(string("unavailable"))
 
 	if err != nil {
-		logger.Panicf("unavailable/Handler.NewHandler: %s", err)
+		logger.Panic("", zap.Error(err))
 	}
 
 	h := Handler{
@@ -68,7 +67,7 @@ func (h *Handler) refreshHTML() {
 	err := h.template.Execute(buf, h.Config)
 
 	if err != nil {
-		h.Logger.Errorf("unavailable/Handler.refreshHTML: %s", err)
+		h.Logger.Error("", zap.Error(err))
 	}
 
 	h.html = buf.Bytes()

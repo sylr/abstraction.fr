@@ -6,18 +6,19 @@ import (
 	"runtime/trace"
 
 	"abstraction.fr/config"
-	log "github.com/sirupsen/logrus"
+
+	"go.uber.org/zap"
 )
 
 // ServerMiddleware ...
 type ServerMiddleware struct {
 	Config  *config.Config
-	Logger  *log.Entry
+	Logger  *zap.Logger
 	Version string
 }
 
 // NewServerMiddleware ...
-func NewServerMiddleware(conf *config.Config, logger *log.Entry, version string) *ServerMiddleware {
+func NewServerMiddleware(conf *config.Config, logger *zap.Logger, version string) *ServerMiddleware {
 	mdw := ServerMiddleware{
 		Config:  conf,
 		Logger:  logger,
