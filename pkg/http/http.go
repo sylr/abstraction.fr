@@ -81,6 +81,11 @@ func NewHTTPRouter(conf *config.Config, logger *zap.Logger) http.Handler {
 	// Middlewares
 	serverHeaderMiddleware := headers.NewServerMiddleware(conf, logger, *config.Version)
 	probesWhitelistMiddleware := accesscontrol.NewIPWhitelistMiddleware(conf, logger, forbiddenHandler)
+	metricsMiddleware := metrics.NewMiddleware(conf, logger)
+	defaultMiddlewares := []mux.MiddlewareFunc{
+		metricsMiddleware.Middleware,
+		serverHeaderMiddleware.Middleware,
+	}
 
 	// Liveness
 	subrouter := router.Path("/ping").Subrouter()
@@ -118,14 +123,6 @@ func NewHTTPRouter(conf *config.Config, logger *zap.Logger) http.Handler {
 	subrouter.NewRoute().Handler(staticHandler)
 	subrouter.Use(serverHeaderMiddleware.Middleware)
 
-	// Error pages
-	metricsmdw := metrics.NewMiddleware(conf, logger)
-
-	defaultMiddlewares := []mux.MiddlewareFunc{
-		metricsmdw.Middleware,
-		serverHeaderMiddleware.Middleware,
-	}
-
 	// Looking Glass
 	subrouter = router.Path("/lg").Subrouter()
 	subrouter.Use(defaultMiddlewares...)
@@ -137,6 +134,7 @@ func NewHTTPRouter(conf *config.Config, logger *zap.Logger) http.Handler {
 
 	// Index
 	subrouter = router.Path("/").Subrouter()
+	subrouter.Use(defaultMiddlewares...)
 	subrouter.NewRoute().Handler(resumeHandler)
 
 	// Error pages router
