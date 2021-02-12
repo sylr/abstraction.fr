@@ -12,7 +12,7 @@ GOARM                    ?= $(GOENV_GOARM)
 GO_BUILD_SRC             := $(shell find . -name \*.go -type f) go.mod go.sum
 GO_BUILD_SRC             += $(shell find templates -type f)
 GO_BUILD_SRC             += $(shell find static -type f)
-GO_BUILD_EXTLDFLAGS      :=
+GO_BUILD_EXTLDFLAGS      := -static
 GO_BUILD_TAGS            := static
 GO_BUILD_TARGET_DEPS     :=
 GO_BUILD_FLAGS           :=
@@ -139,24 +139,24 @@ $(GO_BUILD_TARGET): $(GO_BUILD_VERSION_TARGET)
 	@ln $< $@
 
 $(GO_BUILD_VERSION_TARGET): $(GO_BUILD_SRC) $(GO_GENERATE_TARGET) $(GO_BUILD_FLAGS_TARGET) | $(GO_BUILD_TARGET_DEPS)
-	GOOS=$(GOOS) GOARCH=$(GOARCH) GOARM=$(GOARM) $(GO) build -tags $(GO_BUILD_TAGS) $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) GOARM=$(GOARM) $(GO) build -tags $(GO_BUILD_TAGS) $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 crossbuild: $(GO_BUILD_VERSION_TARGET) $(GO_CROSSBUILD_TARGETS)
 
 $(GO_CROSSBUILD_LINUX_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=linux GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//")) $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	CGO_ENABLED=0 GOOS=linux GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//")) $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 $(GO_CROSSBUILD_FREEBSD_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=freebsd GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	CGO_ENABLED=0 GOOS=freebsd GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 $(GO_CROSSBUILD_OPENBSD_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=openbsd GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	CGO_ENABLED=0 GOOS=openbsd GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 $(GO_CROSSBUILD_WINDOWS_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=windows GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	CGO_ENABLED=0 GOOS=windows GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 $(GO_CROSSBUILD_DARWIN_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=darwin GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	CGO_ENABLED=0 GOOS=darwin GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 # -- tools ---------------------------------------------------------------------
 
