@@ -45,3 +45,8 @@ COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 COPY --from=builder /etc/services /etc/services
 COPY --from=builder "/go/src/abstraction.fr/dist/$TARGETPLATFORM/abstraction.fr" .
+
+
+USER nobody
+
+ENTRYPOINT ["/usr/local/bin/abstraction.fr"]
