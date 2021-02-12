@@ -5,8 +5,10 @@ GO                  ?= $(shell which go)
 ifneq ($(GO),)
 GOENV_GOOS               := $(shell go env GOOS)
 GOENV_GOARCH             := $(shell go env GOARCH)
+GOENV_GOARM              := $(shell go env GOARM)
 GOOS                     ?= $(GOENV_GOOS)
 GOARCH                   ?= $(GOENV_GOARCH)
+GOARM                    ?= $(GOENV_GOARM)
 GO_BUILD_SRC             := $(shell find . -name \*.go -type f) go.mod go.sum
 GO_BUILD_SRC             += $(shell find templates -type f)
 GO_BUILD_SRC             += $(shell find static -type f)
@@ -104,6 +106,7 @@ $(GO_BUILD_FLAGS_TARGET) : .FORCE
 	@(echo "GO_VERSION=$(shell $(GO) version)"; \
 	  echo "GO_GOOS=$(GOOS)"; \
 	  echo "GO_GOARCH=$(GOARCH)"; \
+	  echo "GO_GOARM=$(GOARM)"; \
 	  echo "GO_BUILD_TAGS=$(GO_BUILD_TAGS)"; \
 	  echo "GO_BUILD_FLAGS=$(GO_BUILD_FLAGS)"; \
 	  echo 'GO_BUILD_LDFLAGS=$(subst ','\'',$(GO_BUILD_LDFLAGS))') \
@@ -111,6 +114,7 @@ $(GO_BUILD_FLAGS_TARGET) : .FORCE
 	        || (echo "GO_VERSION=$(shell $(GO) version)"; \
 	            echo "GO_GOOS=$(GOOS)"; \
 	            echo "GO_GOARCH=$(GOARCH)"; \
+	            echo "GO_GOARM=$(GOARM)"; \
 	            echo "GO_BUILD_TAGS=$(GO_BUILD_TAGS)"; \
 	            echo "GO_BUILD_FLAGS=$(GO_BUILD_FLAGS)"; \
 	            echo 'GO_BUILD_LDFLAGS=$(subst ','\'',$(GO_BUILD_LDFLAGS))') > $@
@@ -135,24 +139,24 @@ $(GO_BUILD_TARGET): $(GO_BUILD_VERSION_TARGET)
 	@ln $< $@
 
 $(GO_BUILD_VERSION_TARGET): $(GO_BUILD_SRC) $(GO_GENERATE_TARGET) $(GO_BUILD_FLAGS_TARGET) | $(GO_BUILD_TARGET_DEPS)
-	GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) build -tags $(GO_BUILD_TAGS) $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	GOOS=$(GOOS) GOARCH=$(GOARCH) GOARM=$(GOARM) $(GO) build -tags $(GO_BUILD_TAGS) $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 crossbuild: $(GO_BUILD_VERSION_TARGET) $(GO_CROSSBUILD_TARGETS)
 
 $(GO_CROSSBUILD_LINUX_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=linux GOARCH=$* $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	GOOS=linux GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//")) $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 $(GO_CROSSBUILD_FREEBSD_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=freebsd GOARCH=$* $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	GOOS=freebsd GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 $(GO_CROSSBUILD_OPENBSD_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=openbsd GOARCH=$* $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	GOOS=openbsd GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 $(GO_CROSSBUILD_WINDOWS_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=windows GOARCH=$* $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	GOOS=windows GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 $(GO_CROSSBUILD_DARWIN_TARGET_PATTERN): $(GO_BUILD_SRC) $(GO_BUILD_FLAGS_TARGET)
-	GOOS=darwin GOARCH=$* $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
+	GOOS=darwin GOARCH=$(shell echo $* | cut -d '/' -f1) GOARM=$(shell echo $* | cut -d '/' -f2 | sed "s/^v//") $(GO) build -tags $(GO_BUILD_TAGS),crossbuild $(GO_BUILD_FLAGS) $(GO_BUILD_LDFLAGS) -o $@
 
 # -- tools ---------------------------------------------------------------------
 
@@ -167,6 +171,15 @@ git-hooks:
 
 docker-build:
 	@docker buildx build . -f Dockerfilex \
+		-t $(DOCKER_BUILD_IMAGE):$(DOCKER_BUILD_VERSION) \
+		--cache-to=type=local,dest=$(DOCKER_BUILDX_CACHE) \
+		--platform=$(DOCKER_BUILDX_PLATFORMS) \
+		$(DOCKER_BUILD_BUILD_ARGS) \
+		$(DOCKER_BUILD_LABELS)
+
+docker-push:
+	@docker buildx build . -f Dockerfilex \
+		--push \
 		-t $(DOCKER_BUILD_IMAGE):$(DOCKER_BUILD_VERSION) \
 		--cache-to=type=local,dest=$(DOCKER_BUILDX_CACHE) \
 		--platform=$(DOCKER_BUILDX_PLATFORMS) \
