@@ -1,6 +1,6 @@
 # vim: set ft=dockerfile:
 
-ARG GO_VERSION=1.16rc1
+ARG GO_VERSION=1.16
 
 # Base image
 FROM --platform=$BUILDPLATFORM golang:$GO_VERSION AS go
