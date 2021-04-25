@@ -64,7 +64,7 @@ GO_CROSSBUILD_TARGETS                += $(patsubst darwin/%,$(GO_CROSSBUILD_DARW
 
 DOCKER_BUILD_IMAGE      ?= ghcr.io/sylr/abstraction.fr
 DOCKER_BUILD_VERSION    ?= $(GIT_VERSION)
-DOCKER_BUILD_GO_VERSION ?= 1.16rc1
+DOCKER_BUILD_GO_VERSION ?= 1.16
 DOCKER_BUILD_LABELS      = --label org.opencontainers.image.title=prometheus-azure-exporter
 DOCKER_BUILD_LABELS     += --label org.opencontainers.image.description="Azure metrics exporter for prometheus"
 DOCKER_BUILD_LABELS     += --label org.opencontainers.image.url="https://github.com/sylr/abstraction.fr"

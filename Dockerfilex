@@ -21,13 +21,15 @@ COPY . .
 
 FROM --platform=$BUILDPLATFORM go AS builder
 
-ARG TARGETPLATFORM
+# Switch shell to bash
+SHELL ["bash", "-c"]
 
-RUN ["/bin/bash", "-c", "make build \
-GO_BUILD_VERSION_TARGET=dist/$TARGETPLATFORM/abstraction.fr \
-GOOS=$(cut -d '/' -f1 <<<\"$TARGETPLATFORM\") \
-GOARCH=$(cut -d '/' -f2 <<<\"$TARGETPLATFORM\") \
-GOARM=$(cut -d '/' -f3 <<<\"$TARGETPLATFORM\" | sed \"s/^v//\")"]
+ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
+
+RUN make build GOOS=${TARGETOS} GOARCH=${TARGETARCH} GOARM=${TARGETVARIANT/v/} GO_BUILD_VERSION_TARGET=dist/${TARGETPLATFORM}/abstraction.fr
 
 # ------------------------------------------------------------------------------
 
