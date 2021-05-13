@@ -185,12 +185,25 @@ main.resumé>h1:nth-of-type(1) {
     margin-bottom: 0px;
 }
 
+main.resumé h2 {
+    margin-top: 30px;
+}
+
 main.resumé>p:nth-of-type(1) {
     margin-top: 0px;
 }
 
 main.resumé>aside {
     float: right;
+}
+
+main p.highlight {
+    border: 1px solid rgb(129, 129, 129);
+    background-color: rgb(255, 244, 244);
+    border-radius: 2px;
+    box-shadow: 2px 3px 4px #ccc;
+    color: #000;
+    padding: 10px;
 }
 
 table.resumé>tbody>tr>td:first-child {
