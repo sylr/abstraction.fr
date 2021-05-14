@@ -103,6 +103,9 @@ body>header {
     background-image: url(/static/images/background.png);
     background-repeat: repeat-x;
     border-bottom: 2px solid var(--main-color);
+    image-rendering: auto;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
     color: #FFF;
     height: 33px;
     margin-bottom: 0px;
