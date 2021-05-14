@@ -9,8 +9,8 @@ internal:
 
 # Uncomment following properties to use templates or static contents from FS
 # instead of the ones embeded in the binary
-#static: ./static
-#templates: ./templates/
+static: ./static
+templates: ./templates/
 
 # Length of this []bool defines the logger level.
 # []bool{true, true, true} -> -vvv

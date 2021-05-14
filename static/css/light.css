@@ -252,3 +252,11 @@ table.looking-glass tr.h {
     font-weight: bold;
     text-align: center;
 }
+
+span.fas, span.fab {
+    width: 19px;
+    font-weight: 900;
+    margin: auto;
+    text-align: center;
+    display: inline-block;
+}
