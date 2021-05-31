@@ -204,7 +204,7 @@ main p.highlight {
     border: 1px solid rgb(129, 129, 129);
     background-color: rgb(255, 244, 244);
     border-radius: 2px;
-    box-shadow: 2px 3px 4px #ccc;
+    box-shadow: 1px 2px 3px #ccc;
     color: #000;
     padding: 10px;
 }
@@ -212,6 +212,7 @@ main p.highlight {
 table.resumé>tbody>tr>td:first-child {
     padding-right: 30px;
     white-space: nowrap;
+    font-weight: bold;
 }
 
 table.resumé>tbody>tr:last-child>td {
